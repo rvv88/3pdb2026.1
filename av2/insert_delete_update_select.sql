@@ -23,16 +23,16 @@ DELETE FROM `caracteristica` WHERE `id_caracteristica` = 7
 UPDATE `caracteristica_vaga` SET `descricao`='não bate sol' WHERE `id_caracteristica_vaga`=2
 
 --> Exibe a lista de caracteristicas atribuidas somente às vagas
-SELECT * FROM `caracteristica_quarto` 
+SELECT * FROM `caracteristica_vaga` 
   
 
 ------------------Tabela Carrinho------------------
-INSERT INTO `carrinho`(`id_carrinho`, `id_cliente`,`valor_total`, `status_carrinho`) VALUES ('1','1','568,00','1')
-INSERT INTO `carrinho`(`id_cliente`,`valor_total`, `status_carrinho`) VALUES ('2','2120,99','1')
-INSERT INTO `carrinho`(`id_cliente`,`valor_total`, `status_carrinho`) VALUES ('2','599,17','1')
+INSERT INTO `carrinho`(`id_carrinho`, `id_cliente`,`valor_total`, `status_carrinho`) VALUES ('1','1','568.00','1')
+INSERT INTO `carrinho`(`id_cliente`,`valor_total`, `status_carrinho`) VALUES ('2','2120.99','1')
+INSERT INTO `carrinho`(`id_cliente`,`valor_total`, `status_carrinho`) VALUES ('2','599.17','1')
 
 -->Carrinho estava com status 1 pois estava ativo. Como o cliente abandonou o carrinho, o status foi alterado para 2. A aplicação converterá o status em texto.
-UPDATE `carrinho` SET `status_carrinho` = '2' WHERE `carrinho`.`id_carrinho` = 2
+UPDATE `carrinho` SET `status_carrinho` = 2 WHERE `carrinho`.`id_carrinho` = 2
 
 -->Deleta carrinhos que estejam com status de abandonado (status_carrinho=2) e que já tenha passado 7 dias desde sua data de criação
 DELETE FROM `carrinho` WHERE status_carrinho = 2 AND data_criacao < NOW() - INTERVAL 7 DAY
@@ -84,15 +84,15 @@ INSERT INTO `pagamento`(`id_carrinho`, `valor_pago`, `status_pagamento`) VALUES 
 
 -->Pagamento confirmado
 -->Atualiza status de pagamento para PAGO, recebe e armazena o token da transação do cartão de crédito e atualiza valor pago, de acordo com as condições de pagamento(a vista, a prazo)
- UPDATE `pagamento` SET `valor_pago`='599,00',`status_pagamento`='2',`codigo_transacao`='tx_9F7b3D2k8L1mN4p' WHERE `id_pagamento`=2  
+ UPDATE `pagamento` SET `valor_pago`='599.00',`status_pagamento`='2',`codigo_transacao`='tx_9F7b3D2k8L1mN4p' WHERE `id_pagamento`=2  
 -->Atualiza status do carrinho de Aguardando pagamento para pago
 UPDATE `carrinho` SET `status_carrinho` = 3;
   
 -->Pagamento recusado
 -->Atualiza status de pagamento para RECUSADO(`status_pagamento`='4')
- UPDATE `pagamento` SET `status_pagamento`='4' WHERE `id_pagamento`=1  
+ UPDATE `pagamento` SET `status_pagamento`= 4 WHERE `id_pagamento`=1  
 -->Atualiza carrinho paga status de aguardando pagamento(`status_carrinho` = '4')
-UPDATE `carrinho` SET `status_carrinho` = '4' WHERE `carrinho`.`id_carrinho` = 1
+UPDATE `carrinho` SET `status_carrinho` = 4 WHERE `carrinho`.`id_carrinho` = 1
   
 DELETE -->Informações sobre pagamento não podem ser excluídas e ficam como histórico permanente. Ao invés de deletar um pagamento, como no caso dele ser negado, a tabela deve usar o UPDATE para alterar o status de pagamento. O histórico permanece!
 
@@ -111,7 +111,7 @@ INSERT INTO `quarto`(`numero_quarto`, `capacidade_vagas`) VALUES ('101','8'),('1
 INSERT INTO `quarto`(`numero_quarto`, `capacidade_vagas`) VALUES ('103','16');
 
 --> Busca deleta o quarto listado com capacidade para 16 vagas. O novo limite de vagas é 12 por quarto.
-DELETE FROM `quarto` WHERE `capacidade_vagas`=16;
+DELETE FROM `quarto` WHERE `capacidade_vagas` = 16;
 
 --> Busca quais quartos possuem banheiro privado
 SELECT DISTINCT
@@ -126,7 +126,7 @@ WHERE
     cqt.id_caracteristica = 1 ;
 
 --> Atualizada a capacidade_vagas= de "8" para "4" no quarto 101
-UPDATE `quarto` SET `capacidade_vagas`='4' WHERE `numero_quarto`=101;
+UPDATE `quarto` SET `capacidade_vagas`= 4 WHERE `numero_quarto`=101;
 
 
 ------------------Tabela Quarto_Caracteristica------------------
@@ -137,7 +137,7 @@ INSERT INTO `quarto_caracteristica`(`id_quarto`, `id_caracteristica`) VALUES ('1
 
 
 -->Atualiza caracteristica do quarto de id_quarto = 1. Agora quarto de 1(num 100) tem banheiro privativo e ar condicionado
-UPDATE `quarto_caracteristica` SET `id_caracteristica` = '3' WHERE `quarto_caracteristica`.`id_quarto` = 1 AND `quarto_caracteristica`.`id_caracteristica` = 2
+UPDATE `quarto_caracteristica` SET `id_caracteristica` = 3 WHERE `quarto_caracteristica`.`id_quarto` = 1 AND `quarto_caracteristica`.`id_caracteristica` = 2
 
 DELETE --> O comando DELETE não pode ser aplicado diretamente a esta tabela associativa por possuir exclusivamente chaves do tipo PK/FK. Para realizar a exclusão seria necessário alterar as restrições das chaves estrangeiras
   
@@ -152,7 +152,7 @@ LEFT JOIN CARACTERISTICA_QUARTO cq ON qc.id_caracteristica = cq.id_caracteristic
 
 
 ------------------Tabela Reserva------------------
-INSERT INTO `reserva`(`id_reserva`, `id_carrinho`, `id_quarto`, `data_inicio`, `data_fim`, `valor_diaria`, `valor_total`, `status_reserva`) VALUES ('1','3','1','2026-07-01 15:00:00','2026-07-03 12:00:00','299,50','599,00','1')
+INSERT INTO `reserva`(`id_reserva`, `id_carrinho`, `id_quarto`, `data_inicio`, `data_fim`, `valor_diaria`, `valor_total`, `status_reserva`) VALUES ('1','3','1','2026-07-01 15:00:00','2026-07-03 12:00:00','299.50','599.00','1')
 
 -->Alteração de STATUS de reserva devido a CHECKIN do hóspede no hotel. Alterado de Reservado(status_reserva=1) para CheckedIn(status_reserva=2)
 -->Alteração feita ao garantir que o status da reserva não estava como cancelado antes de alterar
@@ -218,7 +218,7 @@ INSERT INTO `vaga_caracteristica`(`id_vaga`, `id_caracteristica`) VALUES ('1','6
 INSERT INTO `vaga_caracteristica`(`id_vaga`, `id_caracteristica`) VALUES ('5','6'),('5','2'),('6','5'),('6','2'),('7','1'),('8','2');
 
 -->Atualiza caracteristicas da vaga de id_vaga=3
-UPDATE `vaga_caracteristica` SET `id_caracteristica` = '4' WHERE `vaga_caracteristica`.`id_vaga` = 3 AND `vaga_caracteristica`.`id_caracteristica` = 2
+UPDATE `vaga_caracteristica` SET `id_caracteristica` = 4 WHERE `vaga_caracteristica`.`id_vaga` = 3 AND `vaga_caracteristica`.`id_caracteristica` = 2
 
 DELETE --> O comando DELETE não pode ser aplicado diretamente a esta tabela associativa por possuir exclusivamente chaves do tipo PK/FK. Para realizar a exclusão seria necessário alterar as restrições das chaves estrangeiras
 
