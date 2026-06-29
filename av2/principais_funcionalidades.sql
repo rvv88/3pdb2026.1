@@ -38,16 +38,18 @@ VALUES (1, 1, '2026-07-01 15:00:00', '2026-07-03 12:00:00', 299.50, 599.00, 1);
 SELECT 
     car.id_carrinho,
     c.nome_completo AS cliente,
-    --> Descobre o tipo de reserva
+    -->Nomeia o tipo da reserva
     CASE 
         WHEN r.id_vaga IS NOT NULL THEN 'Vaga Individual'
         WHEN r.id_quarto IS NOT NULL THEN 'Quarto Inteiro'
         ELSE 'Não identificado'
     END AS tipo_item,
+    
     CASE 
         WHEN r.id_vaga IS NOT NULL THEN q_vaga.numero_quarto
         WHEN r.id_quarto IS NOT NULL THEN q_inteiro.numero_quarto
     END AS numero_quarto,
+    
     r.data_inicio AS data_entrada,
     r.data_fim AS data_saida,
     car.valor_total
