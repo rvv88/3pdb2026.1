@@ -39,8 +39,8 @@ SELECT
     car.id_carrinho,
     c.nome_completo AS cliente,
     CASE 
-        WHEN r.id_quarto IS NOT NULL THEN 'Quarto Inteiro'
         WHEN r.id_vaga IS NOT NULL THEN 'Vaga Individual'
+        WHEN r.id_quarto IS NOT NULL THEN 'Quarto Inteiro'
         ELSE 'Não identificado'
     END AS tipo_item,
     COALESCE(q_inteiro.numero_quarto, q_vaga.numero_quarto) AS numero_quarto,
