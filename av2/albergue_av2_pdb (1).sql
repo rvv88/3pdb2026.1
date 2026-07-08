@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27/06/2026 às 07:56
--- Versão do servidor: 10.4.32-MariaDB
--- Versão do PHP: 8.2.12
+-- Tempo de geraÃ§Ã£o: 08/07/2026 Ã s 03:27
+-- VersÃ£o do servidor: 10.4.32-MariaDB
+-- VersÃ£o do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -59,10 +59,10 @@ CREATE TABLE `caracteristica_vaga` (
 --
 
 INSERT INTO `caracteristica_vaga` (`id_caracteristica_vaga`, `descricao`) VALUES
-(1, 'sol da manhã'),
-(2, 'não bate sol'),
-(3, 'próximo a porta'),
-(4, 'próximo a janela'),
+(1, 'sol da manhÃ£'),
+(2, 'nÃ£o bate sol'),
+(3, 'prÃ³ximo a porta'),
+(4, 'prÃ³ximo a janela'),
 (5, 'cama beliche inferior'),
 (6, 'cama beliche superior');
 
@@ -119,7 +119,7 @@ INSERT INTO `cliente` (`id_cliente`, `nome_completo`, `cpf`, `email`, `telefone`
 
 CREATE TABLE `pagamento` (
   `id_pagamento` int(11) NOT NULL,
-  `id_carrinho` int(11) NOT NULL,
+  `id_carrinho` int(11) DEFAULT NULL,
   `valor_pago` decimal(10,2) NOT NULL,
   `data_pagamento` datetime NOT NULL DEFAULT current_timestamp(),
   `status_pagamento` tinyint(4) NOT NULL,
@@ -183,7 +183,7 @@ INSERT INTO `quarto_caracteristica` (`id_quarto`, `id_caracteristica`) VALUES
 
 CREATE TABLE `reserva` (
   `id_reserva` int(11) NOT NULL,
-  `id_carrinho` int(11) NOT NULL,
+  `id_carrinho` int(11) DEFAULT NULL,
   `id_vaga` int(11) DEFAULT NULL,
   `id_quarto` int(11) DEFAULT NULL,
   `data_inicio` datetime NOT NULL DEFAULT current_timestamp(),
@@ -199,7 +199,8 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`id_reserva`, `id_carrinho`, `id_vaga`, `id_quarto`, `data_inicio`, `data_fim`, `valor_diaria`, `valor_total`, `status_reserva`, `data_cancelamento`) VALUES
-(1, 3, NULL, 1, '2026-07-01 15:00:00', '2026-07-03 12:00:00', 299.00, 599.00, 2, NULL);
+(1, 3, NULL, 1, '2026-07-01 15:00:00', '2026-07-03 12:00:00', 299.00, 599.00, 2, NULL),
+(2, 1, 8, 2, '2026-07-01 15:00:00', '2026-01-02 12:00:00', 568.00, 568.00, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -256,72 +257,72 @@ INSERT INTO `vaga_caracteristica` (`id_vaga`, `id_caracteristica`) VALUES
 (8, 2);
 
 --
--- Índices para tabelas despejadas
+-- Ãndices para tabelas despejadas
 --
 
 --
--- Índices de tabela `caracteristica_quarto`
+-- Ãndices de tabela `caracteristica_quarto`
 --
 ALTER TABLE `caracteristica_quarto`
   ADD PRIMARY KEY (`id_caracteristica_quarto`);
 
 --
--- Índices de tabela `caracteristica_vaga`
+-- Ãndices de tabela `caracteristica_vaga`
 --
 ALTER TABLE `caracteristica_vaga`
   ADD PRIMARY KEY (`id_caracteristica_vaga`);
 
 --
--- Índices de tabela `carrinho`
+-- Ãndices de tabela `carrinho`
 --
 ALTER TABLE `carrinho`
   ADD PRIMARY KEY (`id_carrinho`),
   ADD KEY `fk_id_cliente` (`id_cliente`);
 
 --
--- Índices de tabela `cliente`
+-- Ãndices de tabela `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`);
 
 --
--- Índices de tabela `pagamento`
+-- Ãndices de tabela `pagamento`
 --
 ALTER TABLE `pagamento`
   ADD PRIMARY KEY (`id_pagamento`),
   ADD KEY `fK_id_carrinho` (`id_carrinho`);
 
 --
--- Índices de tabela `quarto`
+-- Ãndices de tabela `quarto`
 --
 ALTER TABLE `quarto`
   ADD PRIMARY KEY (`id_quarto`);
 
 --
--- Índices de tabela `quarto_caracteristica`
+-- Ãndices de tabela `quarto_caracteristica`
 --
 ALTER TABLE `quarto_caracteristica`
   ADD PRIMARY KEY (`id_quarto`,`id_caracteristica`),
   ADD KEY `fk_id_caracteristica_quarto` (`id_caracteristica`);
 
 --
--- Índices de tabela `reserva`
+-- Ãndices de tabela `reserva`
 --
 ALTER TABLE `reserva`
   ADD PRIMARY KEY (`id_reserva`),
-  ADD KEY `fk_id_carrinho_reserva` (`id_carrinho`),
   ADD KEY `fk_id_vaga_reserva` (`id_vaga`),
-  ADD KEY `fk_id_quarto_reserva` (`id_quarto`);
+  ADD KEY `fk_id_quarto_reserva` (`id_quarto`),
+  ADD KEY `fk_id_carrinho_reserva` (`id_carrinho`);
 
 --
--- Índices de tabela `vaga`
+-- Ãndices de tabela `vaga`
 --
 ALTER TABLE `vaga`
   ADD PRIMARY KEY (`id_vaga`),
   ADD KEY `fk_id_quarto_vaga` (`id_quarto`);
 
 --
--- Índices de tabela `vaga_caracteristica`
+-- Ãndices de tabela `vaga_caracteristica`
 --
 ALTER TABLE `vaga_caracteristica`
   ADD PRIMARY KEY (`id_vaga`,`id_caracteristica`),
@@ -371,7 +372,7 @@ ALTER TABLE `quarto`
 -- AUTO_INCREMENT de tabela `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `vaga`
@@ -380,44 +381,44 @@ ALTER TABLE `vaga`
   MODIFY `id_vaga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Restrições para tabelas despejadas
+-- RestriÃ§Ãµes para tabelas despejadas
 --
 
 --
--- Restrições para tabelas `carrinho`
+-- RestriÃ§Ãµes para tabelas `carrinho`
 --
 ALTER TABLE `carrinho`
   ADD CONSTRAINT `fk_id_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`);
 
 --
--- Restrições para tabelas `pagamento`
+-- RestriÃ§Ãµes para tabelas `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD CONSTRAINT `fK_id_carrinho` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id_carrinho`);
+  ADD CONSTRAINT `fK_id_carrinho` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id_carrinho`) ON DELETE SET NULL;
 
 --
--- Restrições para tabelas `quarto_caracteristica`
+-- RestriÃ§Ãµes para tabelas `quarto_caracteristica`
 --
 ALTER TABLE `quarto_caracteristica`
   ADD CONSTRAINT `fk_id_caracteristica_quarto` FOREIGN KEY (`id_caracteristica`) REFERENCES `caracteristica_quarto` (`id_caracteristica_quarto`),
   ADD CONSTRAINT `fk_id_quarto` FOREIGN KEY (`id_quarto`) REFERENCES `quarto` (`id_quarto`);
 
 --
--- Restrições para tabelas `reserva`
+-- RestriÃ§Ãµes para tabelas `reserva`
 --
 ALTER TABLE `reserva`
-  ADD CONSTRAINT `fk_id_carrinho_reserva` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id_carrinho`),
+  ADD CONSTRAINT `fk_id_carrinho_reserva` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id_carrinho`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_id_quarto_reserva` FOREIGN KEY (`id_quarto`) REFERENCES `quarto` (`id_quarto`),
   ADD CONSTRAINT `fk_id_vaga_reserva` FOREIGN KEY (`id_vaga`) REFERENCES `vaga` (`id_vaga`);
 
 --
--- Restrições para tabelas `vaga`
+-- RestriÃ§Ãµes para tabelas `vaga`
 --
 ALTER TABLE `vaga`
   ADD CONSTRAINT `fk_id_quarto_vaga` FOREIGN KEY (`id_quarto`) REFERENCES `vaga` (`id_vaga`);
 
 --
--- Restrições para tabelas `vaga_caracteristica`
+-- RestriÃ§Ãµes para tabelas `vaga_caracteristica`
 --
 ALTER TABLE `vaga_caracteristica`
   ADD CONSTRAINT `	 fk_id_caracteristica_vaga` FOREIGN KEY (`id_caracteristica`) REFERENCES `caracteristica_vaga` (`id_caracteristica_vaga`),
