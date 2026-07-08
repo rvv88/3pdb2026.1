@@ -1,0 +1,31 @@
+-----Resumo das Alterações Realizadas-------
+
+A) Carrinho Temporário e Volatilidade (ON DELETE SET NULL)
+
+Mudança: Os campos id_carrinho nas tabelas RESERVA e PAGAMENTO foram alterados para aceitar valores nulos (NULL).
+
+Justificativa: Permite que o carrinho seja totalmente excluído (DELETE) após o checkout. O MySQL limpa a tabela temporária e preserva o histórico financeiro e de hospedagem sem violar as chaves estrangeiras.
+
+B) Acúmulo de Reservas e Pagamento Único (0..1)
+
+Mudança: A cardinalidade entre CARRINHO e PAGAMENTO foi ajustada no diagrama relacional para 1 para 0..1.
+
+Justificativa: Garante que o cliente possa acumular múltiplos itens no carrinho antes de pagar (pagamento opcional(0) enquanto ativo) e realizar uma única transação financeira (1) para validar todas as reservas simultaneamente.
+
+C) Flexibilidade de Locação (Vaga Individual vs. Quarto Inteiro)
+
+Mudança: Na tabela RESERVA, as chaves estrangeiras id_vaga e id_quarto tornaram-se opcionais (NULL).
+
+Justificativa: Evita a redundância e inconsistência de dados (visto que a vaga já possui o vínculo com seu respectivo quarto). Permite identificar o tipo de venda: se for vaga, id_quarto fica nulo; se for o cômodo inteiro, id_vaga fica nulo.
+
+4) Otimização de Performance na Query para Procurar Vagas/Quartos (Substituição de NOT IN por LEFT JOIN)
+
+Mudança: A consulta de disponibilidade foi completamente reescrita trocando as subqueries por junções externas (LEFT JOIN ... WHERE IS NULL).
+
+Justificativa: Atende ao critério de eficiência em bancos de dados relacionais, utilizando índices para cruzar o choque de datas e aplicando o bloqueio mútuo (uma vaga ocupada inviabiliza o aluguel do quarto inteiro).
+
+5) Correção na Tabela Vaga
+
+Mudança: A restrição fk_id_quarto_vaga foi corrigida para apontar corretamente para a tabela QUARTO(id_quarto).
+
+Justificativa: Eliminou o erro de autorreferência circular que travava a inserção de novas vagas no banco.
